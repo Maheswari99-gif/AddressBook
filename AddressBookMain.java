@@ -3,15 +3,27 @@ import java.util.*;
 public class AddressBookMain {
 	
 	private ArrayList<ContactDetails> contactArrayList;
+	private Map<String, ContactDetails> nameToContactDetailsMap;
 	private AddressBookMain() {
-		contactArrayList = new ArrayList<>(); //using ArrayList in place of array
+		contactArrayList = new ArrayList<>(); 
+		nameToContactDetailsMap = new HashMap<>();
 	}
 	
 	private void addContactDetails(String firstName, String lastName, String address, String state, int zip, long phoneNo, String emailId) {
 		ContactDetails contactDetail = new ContactDetails();
 		contactDetail.setContactDetails(firstName, lastName, address, state, zip, phoneNo, emailId);
 		contactArrayList.add(contactDetail);
+		nameToContactDetailsMap.put(firstName.concat(" " + lastName), contactDetail);
 	}
+	
+	
+	
+	
+	private void viewContactDetails(String name) {
+		ContactDetails contactObj =  nameToContactDetailsMap.get(name);
+		System.out.println(contactObj);
+	}
+	
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		AddressBookMain addressBook = new AddressBookMain();
@@ -37,6 +49,9 @@ public class AddressBookMain {
 			String emailId = sc.nextLine();
 			addressBook.addContactDetails(firstName, lastName, address, state, zip, phoneNo, emailId);
 		}
-		System.out.println("Added Succesfully");	
+		//printing by calling key of HashMap
+		System.out.println("Enter name of person you want to print contant details of: ");
+		String name = sc.nextLine();
+		addressBook.viewContactDetails(name);
 	}
 }
