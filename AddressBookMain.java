@@ -30,9 +30,17 @@ public class AddressBookMain {
 	/**
 	 * @param name
 	 */
+	int count=0;
 	private void searchbyCity(String address) {
 		ContactDetails contactObj = nameToContactDetailsMap.get(address);
+		count++;
 		System.out.println(contactObj);
+	
+	if(count==0) {
+		System.out.println("No persons");
+	}
+	else
+		System.out.println(" "+count+ "Persons are there in this address");
 	}
 
 	/**
@@ -40,7 +48,13 @@ public class AddressBookMain {
 	 */
 	private void searchbyState(String state) {
 		ContactDetails contactObj = nameToContactDetailsMap.get(state);
+		count++;
 		System.out.println(contactObj);
+		if(count==0) {
+			System.out.println("No persons");
+		}
+		else
+			System.out.println(" "+count+ "Persons are there in this state");
 	}
 
 	public static void main(String[] args) {
