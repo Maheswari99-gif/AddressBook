@@ -135,6 +135,7 @@ public class AddressBookMain {
 			System.out.println("Enter 1 to continue with another address book, else enter 0: ");
 		} while (Integer.parseInt(sc.nextLine()) == 1);
 		getPersonsByCityOrState();
+		 viewPersonsByCityOrState()
 		sc.close();
 	}
 
