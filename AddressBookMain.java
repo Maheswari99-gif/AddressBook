@@ -1,91 +1,45 @@
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 public class AddressBookMain {
-	private ArrayList<ContactDetails> contactArrayList;
-	private Map<String, ContactDetails> nameToContactDetailsMap;
+	static Scanner sc = new Scanner(System.in);
+	public static String bookname;
+	public static String name;
+	public List<ContactDetails> contacts;
+	public Map<String, ContactDetails> nameToContactMap;
 
-	private AddressBookMain() {
-		contactArrayList = new ArrayList<>();
-		nameToContactDetailsMap = new HashMap<>();
+	public AddressBookMain(String name) {
+		super();
+		this.bookname = name;
+		this.contacts = new LinkedList<ContactDetails>();
+		this.nameToContactMap = new LinkedHashMap<String, ContactDetails>();
 	}
 
-	/**
-	 * @param firstName
-	 * @param lastName
-	 * @param address
-	 * @param state
-	 * @param zip
-	 * @param phoneNo
-	 * @param emailId
-	 */
-	private void addContactDetails(String firstName, String lastName, String address, String state, int zip,
-			long phoneNo, String emailId) {
-		ContactDetails contactDetail = new ContactDetails();
-		contactDetail.setContactDetails(firstName, lastName, address, state, zip, phoneNo, emailId);
-		contactArrayList.add(contactDetail);
-		nameToContactDetailsMap.put(state, contactDetail);
-		nameToContactDetailsMap.put(address, contactDetail);
-	}
-
-	/**
-	 * @param name
-	 */
-	int count=0;
-	private void searchbyCity(String address) {
-		ContactDetails contactObj = nameToContactDetailsMap.get(address);
-		count++;
-		System.out.println(contactObj);
-	
-	if(count==0) {
-		System.out.println("No persons");
-	}
-	else
-		System.out.println(" "+count+ "Persons are there in this address");
-	}
-
-	/**
-	 * @param state
-	 */
-	private void searchbyState(String state) {
-		ContactDetails contactObj = nameToContactDetailsMap.get(state);
-		count++;
-		System.out.println(contactObj);
-		if(count==0) {
-			System.out.println("No persons");
-		}
-		else
-			System.out.println(" "+count+ "Persons are there in this state");
+	public void addContact() {
+		do {
+			System.out.println("Enter the contact details in the given order:\nfirstname\nlastname");
+			ContactDetails checkContact = new ContactDetails(sc.nextLine(), sc.nextLine());
+			if (contacts.stream().anyMatch(contact -> contact.equals(checkContact))) {
+				System.out.println("Same entry already present.");
+			} else {
+				System.out.println(
+						"Enter the contact details in the given order:\nfirstname\nlastname\naddress\nstate\nzip\nphone no.\nemail");
+				ContactDetails newContact = new ContactDetails(sc.nextLine(), sc.nextLine(), sc.nextLine(),sc.nextLine(),
+						Integer.parseInt(sc.nextLine()), Long.parseLong(sc.nextLine()), sc.nextLine());
+				this.contacts.add(newContact);
+				this.nameToContactMap.put(newContact.getFirstName() + " " + newContact.getLastName(), newContact);
+			}
+			System.out.println("Enter 1 to add another contact, else enter 0: ");
+		} while (Integer.parseInt(sc.nextLine()) == 1);
 	}
 
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		AddressBookMain addressBook = new AddressBookMain();
-		System.out.println("No. of contact details to enter: ");
-		int numOfContact = sc.nextInt();
-		sc.nextLine();
-		for (int i = 0; i < numOfContact; i++) {
-			System.out.println("First Name: ");
-			String firstName = sc.nextLine();
-			System.out.println("Last Name: ");
-			String lastName = sc.nextLine();
-			System.out.println("Address: ");
-			String address = sc.nextLine();
-			System.out.println("State: ");
-			String state = sc.nextLine();
-			System.out.println("ZIP: ");
-			int zip = sc.nextInt();
-			System.out.println("Phone No: ");
-			long phoneNo = sc.nextLong();
-			sc.nextLine();
-			System.out.println("Email ID: ");
-			String emailId = sc.nextLine();
-			addressBook.addContactDetails(firstName, lastName, address, state, zip, phoneNo, emailId);
-		}
-		System.out.println("Enter name of city you want to persons of: ");
-		String city = sc.nextLine();
-		addressBook.searchbyCity(city);
-		System.out.println("Enter name of state you want to persons of: ");
-		String state = sc.nextLine();
-		addressBook.searchbyState(state);
+		System.out.println("Enter the name of the addressbook:");
+		String book = sc.nextLine();
+		AddressBookMain addressBook = new AddressBookMain(bookname);
+		addressBook.addContact();
 	}
 }
