@@ -107,6 +107,22 @@ public class AddressBookMain {
 			System.out.println("");
 		});
 	}
+	//usecase10//
+	public static void countByCityAndState() {
+		nameToAddressBookMap.keySet().stream().forEach(addressBookName -> {
+			AddressBookMain addressBook = nameToAddressBookMap.get(addressBookName);
+			System.out.println("In the address book " + addressBookName);
+			System.out.println("");
+			System.out.println("Contact counts by city");
+			addressBook.cityToContactsMap.keySet().stream().forEach(
+					cityName -> System.out.println(cityName + ": " + addressBook.cityToContactsMap.get(cityName).size()));
+			System.out.println("\nContact counts by state");
+			addressBook.stateToContactsMap.keySet().stream().forEach(
+					stateName -> System.out.println(stateName + ": " + addressBook.stateToContactsMap.get(stateName).size()));
+			System.out.println("");
+		});
+	}
+
 
 	public static void addAddressBooks() {
 		int choice = 1;
@@ -135,6 +151,8 @@ public class AddressBookMain {
 			System.out.println("Enter 1 to continue with another address book, else enter 0: ");
 		} while (Integer.parseInt(sc.nextLine()) == 1);
 		getPersonsByCityOrState();
+		viewPersonsByCityOrState();
+		countByCityAndState();
 		sc.close();
 	}
 
