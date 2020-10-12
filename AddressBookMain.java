@@ -4,6 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 public class AddressBookMain {
 	private static final String CITY = "CITY";
@@ -14,12 +17,16 @@ public class AddressBookMain {
 	public List<ContactDetails> contacts;
 	public Map<String, ContactDetails> nameToContactMap;
 	static Map<String, AddressBookMain> nameToAddressBookMap = new HashMap<String, AddressBookMain>();
+	public Map<String, List<ContactDetails>> cityToContactsMap;
+	public Map<String, List<ContactDetails>> stateToContactsMap;
 
 	public AddressBookMain(String name) {
 		super();
 		this.bookname = name;
 		this.contacts = new LinkedList<ContactDetails>();
 		this.nameToContactMap = new LinkedHashMap<String, ContactDetails>();
+		this.cityToContactsMap = new TreeMap<String, List<ContactDetails>>();
+		this.stateToContactsMap = new TreeMap<String, List<ContactDetails>>();
 	}
 
 	// usecase7//
@@ -44,11 +51,8 @@ public class AddressBookMain {
 			System.out.println("Enter 1 to add another contact, else enter 0: ");
 		} while (Integer.parseInt(sc.nextLine()) == 1);
 	}
-	//usecase8//
-	/**
-	 * 
-	 */
 
+	// usecase8//
 	public static void getPersonsByCityOrState() {
 		System.out.println("Choose \n1 To search by city\n2 To search by state\nEnter your choice: ");
 		String option = (Integer.parseInt(sc.nextLine()) == 1) ? CITY : STATE;
@@ -61,6 +65,45 @@ public class AddressBookMain {
 			addressBook.contacts.stream().filter(
 					contact -> ((option == CITY ? contact.getAddress() : contact.getState()).equals(cityOrStateName)))
 					.forEach(contact -> System.out.println(contact));
+			System.out.println("");
+		});
+	}
+
+	// usecase9//
+	/**
+	 * 
+	 */
+	public void generateContactsListByCityAndState() {
+		Set<String> cityNames = contacts.stream().map(contact -> contact.getAddress()).collect(Collectors.toSet());
+		Set<String> stateNames = contacts.stream().map(contact -> contact.getState()).collect(Collectors.toSet());
+		this.cityToContactsMap = cityNames.stream().collect(Collectors.toMap(cityName -> cityName, cityName -> {
+			return contacts.stream().filter(contact -> contact.getAddress().equals(cityName)).sorted((c1, c2) -> {
+				return c1.getFirstName().compareTo(c2.getFirstName());
+			}).collect(Collectors.toList());
+		}));
+		this.stateToContactsMap = stateNames.stream().collect(Collectors.toMap(stateName -> stateName, stateName -> {
+			return contacts.stream().filter(contact -> contact.getState().equals(stateName)).sorted((c1, c2) -> {
+				return c1.getFirstName().compareTo(c2.getFirstName());
+			}).collect(Collectors.toList());
+		}));
+	}
+
+	public static void viewPersonsByCityOrState() {
+		System.out.println("Choose \n1 To view by city\n2 To view by state\nEnter your choice: ");
+		String option = (Integer.parseInt(sc.nextLine()) == 1) ? CITY : STATE;
+		nameToAddressBookMap.keySet().stream().forEach(addressBookName -> {
+			AddressBookMain addressBook = nameToAddressBookMap.get(addressBookName);
+			addressBook.generateContactsListByCityAndState();
+			System.out.println("In the address book " + addressBookName);
+			System.out.println("");
+			(option == CITY ? addressBook.cityToContactsMap.keySet() : addressBook.stateToContactsMap.keySet()).stream()
+					.forEach(cityOrStateName -> {
+						System.out.println(option + ": " + cityOrStateName);
+						(option == CITY ? addressBook.cityToContactsMap.get(cityOrStateName)
+								: addressBook.stateToContactsMap.get(cityOrStateName)).stream()
+										.forEach(contact -> System.out.println(contact));
+						System.out.println("");
+					});
 			System.out.println("");
 		});
 	}
