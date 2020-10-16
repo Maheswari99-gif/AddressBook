@@ -135,6 +135,44 @@ public class AddressBookMain {
 				.sorted(Comparator.comparing(ContactDetails::getFirstName)).collect(Collectors.toList());
 		System.out.println(sortedList);
 	}
+	//usecase12//
+	public static void sortedByCity(Map<String, AddressBookMain> addressBookMap) {
+		List<ContactDetails> contactList = null;
+		for (Map.Entry<String, AddressBookMain> entry : addressBookMap.entrySet()) {
+			AddressBookMain value = entry.getValue();
+			for (int i = 0; i < value.contacts.size(); i++) {
+				contactList = contacts;
+			}
+		}
+		List<ContactDetails> sortedList = contactList.stream()
+				.sorted(Comparator.comparing(ContactDetails::getAddress)).collect(Collectors.toList());
+		System.out.println(sortedList);
+	}
+	public static void sortedByState(Map<String, AddressBookMain> addressBookMap) {
+		List<ContactDetails> contactList = null;
+		for (Map.Entry<String, AddressBookMain> entry : addressBookMap.entrySet()) {
+			AddressBookMain value = entry.getValue();
+			for (int i = 0; i < value.contacts.size(); i++) {
+				contactList = contacts;
+			}
+		}
+		List<ContactDetails> sortedList = contactList.stream()
+				.sorted(Comparator.comparing(ContactDetails::getState)).collect(Collectors.toList());
+		System.out.println(sortedList);
+	}
+	public static void sortedByZip(Map<String, AddressBookMain> addressBookMap) {
+		List<ContactDetails> contactList = null;
+		for (Map.Entry<String, AddressBookMain> entry : addressBookMap.entrySet()) {
+			AddressBookMain value = entry.getValue();
+			for (int i = 0; i < value.contacts.size(); i++) {
+				contactList = contacts;
+			}
+		}
+		List<ContactDetails> sortedList = contactList.stream()
+				.sorted(Comparator.comparing(ContactDetails::getZip)).collect(Collectors.toList());
+		System.out.println(sortedList);
+	}
+	
 
 
 
