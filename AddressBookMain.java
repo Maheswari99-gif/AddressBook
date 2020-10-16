@@ -73,7 +73,7 @@ public class AddressBookMain {
 	/**
 	 * 
 	 */
-	public void generateContactsListByCityAndState() {
+	public void contactsListByCityAndState() {
 		Set<String> cityNames = contacts.stream().map(contact -> contact.getAddress()).collect(Collectors.toSet());
 		Set<String> stateNames = contacts.stream().map(contact -> contact.getState()).collect(Collectors.toSet());
 		this.cityToContactsMap = cityNames.stream().collect(Collectors.toMap(cityName -> cityName, cityName -> {
@@ -93,7 +93,7 @@ public class AddressBookMain {
 		String option = (Integer.parseInt(sc.nextLine()) == 1) ? CITY : STATE;
 		nameToAddressBookMap.keySet().stream().forEach(addressBookName -> {
 			AddressBookMain addressBook = nameToAddressBookMap.get(addressBookName);
-			addressBook.generateContactsListByCityAndState();
+			addressBook.contactsListByCityAndState();
 			System.out.println("In the address book " + addressBookName);
 			System.out.println("");
 			(option == CITY ? addressBook.cityToContactsMap.keySet() : addressBook.stateToContactsMap.keySet()).stream()
@@ -122,6 +122,20 @@ public class AddressBookMain {
 			System.out.println("");
 		});
 	}
+	//usecase11//
+	public static void sortedByFirstName(Map<String, AddressBookMain> addressBookMap) {
+		List<ContactDetails> contactList = null;
+		for (Map.Entry<String, AddressBookMain> entry : addressBookMap.entrySet()) {
+			AddressBookMain value = entry.getValue();
+			for (int i = 0; i < value.contacts.size(); i++) {
+				contactList = contacts;
+			}
+		}
+		List<ContactDetails> sortedList = contactList.stream()
+				.sorted(Comparator.comparing(ContactDetails::getFirstName)).collect(Collectors.toList());
+		System.out.println(sortedList);
+	}
+
 
 
 	public static void addAddressBooks() {
@@ -153,7 +167,7 @@ public class AddressBookMain {
 		getPersonsByCityOrState();
 		viewPersonsByCityOrState();
 		countByCityAndState();
-		sc.close();
+		sortedByFirstName(nameToAddressBookMap);
 	}
 
 }
